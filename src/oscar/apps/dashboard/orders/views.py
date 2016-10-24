@@ -52,10 +52,10 @@ def queryset_orders_for_user(user):
         'user'
     ).prefetch_related('lines')
     if user.is_staff:
-        return queryset
+        return queryset.exclude(parent__isnull=True)
     else:
         partners = Partner._default_manager.filter(users=user)
-        return queryset.filter(lines__partner__in=partners).distinct()
+        return queryset.filter(partner__in=partners)
 
 
 def get_order_for_user_or_404(user, number):
