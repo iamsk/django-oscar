@@ -52,7 +52,7 @@ def queryset_orders_for_user(user):
         'user'
     ).prefetch_related('lines')
     if user.is_staff:
-        return queryset.exclude(parent__isnull=True)
+        return queryset.filter(parent__isnull=True)
     else:
         partners = Partner._default_manager.filter(users=user)
         return queryset.filter(partner__in=partners)
